@@ -1,0 +1,4 @@
+pl/maciejcieslik/checkers/Movement.java
+ pl.maciejcieslik.checkers.Movement
+pl/maciejcieslik/checkers/Checkers.java
+ pl.maciejcieslik.checkers.Checkers
