@@ -63,13 +63,12 @@ public class Checkers extends Application {
             int xToInteger = (int) Math.round(x);
             int yToInteger = (int) Math.round(y);
 
-
-//            System.out.println("[" + xToInteger + ", " + yToInteger + "]");
             System.out.println("[" + (8-xToInteger) + ", " + yToInteger + "]");
         });
 
 
-
+        // TO DO
+        // CONNECT TO CHECKERS LOGIC, CREATE AVAILABLE MOVES ON THAT PROJECT!
     }
 }
 
