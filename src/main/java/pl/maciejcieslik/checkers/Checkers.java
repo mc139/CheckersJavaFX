@@ -13,9 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import pl.maciejcieslik.checkers.logic.Board;
 
-import static javafx.scene.input.MouseDragEvent.MOUSE_DRAG_ENTERED;
-import static javafx.scene.input.MouseEvent.copyForMouseDragEvent;
 
 public class Checkers extends Application {
 
@@ -49,23 +48,22 @@ public class Checkers extends Application {
         grid.add(figures, 1, 1, 3, 1);
 
         Scene scene = new Scene(grid, 1100, 1100, Color.WHITE);
+        Board board = new Board();
+        GameController controller = new GameController(grid,board);
+        controller.showOnBoard();
 
         primaryStage.setTitle("Checkers");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
-
 
         grid.setOnMouseClicked(e -> {
             double y = e.getX()/ 137;
             double x = e.getY()/ 137;
             int xToInteger = (int) Math.round(x);
             int yToInteger = (int) Math.round(y);
-
+            controller.doClick(xToInteger,yToInteger);
             System.out.println("[" + (8-xToInteger) + ", " + yToInteger + "]");
         });
-
 
         // TO DO
         // CONNECT TO CHECKERS LOGIC, CREATE AVAILABLE MOVES ON THAT PROJECT!
