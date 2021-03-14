@@ -1,9 +1,7 @@
+pl/maciejcieslik/checkers/logic/None.java
+ pl.maciejcieslik.checkers.logic.None
 pl/maciejcieslik/checkers/Movement.java
  pl.maciejcieslik.checkers.Movement
-pl/maciejcieslik/checkers/Checkers.java
- pl.maciejcieslik.checkers.Checkers
-pl/maciejcieslik/checkers/logic/Pawn.java
- pl.maciejcieslik.checkers.logic.Pawn
 pl/maciejcieslik/checkers/logic/Queen.java
  pl.maciejcieslik.checkers.logic.Queen
 pl/maciejcieslik/checkers/logic/Main.java
@@ -14,9 +12,13 @@ pl/maciejcieslik/checkers/logic/Figure.java
  pl.maciejcieslik.checkers.logic.Figure
 pl/maciejcieslik/checkers/logic/BoardRow.java
  pl.maciejcieslik.checkers.logic.BoardRow
-pl/maciejcieslik/checkers/logic/App.java
- pl.maciejcieslik.checkers.logic.App
 pl/maciejcieslik/checkers/logic/Board.java
  pl.maciejcieslik.checkers.logic.Board
-pl/maciejcieslik/checkers/logic/None.java
- pl.maciejcieslik.checkers.logic.None
+pl/maciejcieslik/checkers/logic/Pawn.java
+ pl.maciejcieslik.checkers.logic.Pawn
+pl/maciejcieslik/checkers/logic/App.java
+ pl.maciejcieslik.checkers.logic.App
+pl/maciejcieslik/checkers/GameController.java
+ pl.maciejcieslik.checkers.GameController
+pl/maciejcieslik/checkers/Checkers.java
+ pl.maciejcieslik.checkers.Checkers

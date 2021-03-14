@@ -1,15 +1,12 @@
 package pl.maciejcieslik.checkers;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -18,15 +15,13 @@ import pl.maciejcieslik.checkers.logic.Board;
 
 public class Checkers extends Application {
 
-    private Image board = new Image("file:src/main/resources/board.png");
-    private Image pawn = new Image("file:src/main/resources/blackpawn.png");
-    private FlowPane figures = new FlowPane(Orientation.HORIZONTAL);
+    public Image board = new Image("file:src/main/resources/board.png");
+    public Image pawnIMGWhite = new Image("file:src/main/resources/WhitePawnSmall.png");
+    public Image pawnIMGBlack = new Image("file:src/main/resources/BlackPawnSmall.png");
+    public Image queenIMGWhite = new Image("file:src/main/resources/WhiteQueenSmall.png");
+    public Image queenIMGBlack = new Image("file:src/main/resources/BlackQueenSmall.png");
 
 
-//    @Override
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -34,20 +29,24 @@ public class Checkers extends Application {
         BackgroundImage backgroundImage = new BackgroundImage(board, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         Background background = new Background(backgroundImage);
 
+        ColumnConstraints columns = new ColumnConstraints(80);
+        RowConstraints rows = new RowConstraints(80);
+
         GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
-        grid.setHgap(3.5);
-        grid.setVgap(3.5);
+        grid.setAlignment(Pos.BOTTOM_LEFT);
+        grid.setPadding(new Insets(1, 1, 1, 1));
+        grid.setHgap(1.5);
+        grid.setVgap(1.5);
         grid.setBackground(background);
+        grid.getRowConstraints().add(rows);
+        grid.getColumnConstraints().add(columns);
 
 
-        ImageView img = new ImageView(pawn);
-        figures.getChildren().add(img);
+//        ImageView img = new ImageView(pawn);
+//        figuresWhite.getChildren().add(img);
 
-        grid.add(figures, 1, 1, 3, 1);
 
-        Scene scene = new Scene(grid, 1100, 1100, Color.WHITE);
+        Scene scene = new Scene(grid, 1000, 1000, Color.WHITE);
         Board board = new Board();
         GameController controller = new GameController(grid,board);
         controller.showOnBoard();
@@ -57,13 +56,14 @@ public class Checkers extends Application {
         primaryStage.show();
 
         grid.setOnMouseClicked(e -> {
-            double y = e.getX()/ 137;
-            double x = e.getY()/ 137;
+            double y = e.getX()/ 125;
+            double x = e.getY()/ 125;
             int xToInteger = (int) Math.round(x);
             int yToInteger = (int) Math.round(y);
             controller.doClick(xToInteger,yToInteger);
-            System.out.println("[" + (8-xToInteger) + ", " + yToInteger + "]");
+            System.out.println("[" + xToInteger + ", " + yToInteger + "]");
         });
+
 
         // TO DO
         // CONNECT TO CHECKERS LOGIC, CREATE AVAILABLE MOVES ON THAT PROJECT!
