@@ -10,7 +10,7 @@ public class Board extends BoardRow {
 
 
     public Board() {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 9; i++) {
             rows.add(new BoardRow());
         }
     }
@@ -60,16 +60,7 @@ public class Board extends BoardRow {
 
     }
 
-//    public void move(int row1, int col1,int row2,int col2){
-//        Figure figure = getFigure(row1,col1);
-//        setFigure(row2,col2,figure);
-//        setFigure(row1,col1,new None());
-//    }
-
     public boolean move(int row1, int col1, int row2, int col2) {
-//        Figure figure = getFigure(row1,col1);
-//        setFigure(row2,col2,figure);
-//        setFigure(row1,col1,new None());
 
         Figure figure = getFigure(row1, col1);
 
@@ -85,15 +76,17 @@ public class Board extends BoardRow {
         return (Figure) rows.get(row).getColumn().get(col);
     }
 
-    public Board(List<BoardRow> rows, List<Figure> cols) {
-        this.rows = rows;
-        this.cols = cols;
-        for (int i = 0; i > 8; i++) {
-            rows.add(new BoardRow());
-        }
-    }
+////    public Board(List<BoardRow> rows, List<Figure> cols) {
+////        this.rows = rows;
+////        this.cols = cols;
+////        for (int i = 0; i < 8; i++) {
+////            rows.add(new BoardRow());
+////        }
+//    }
 
     public void setFigure(int row, int col, Figure figure) {
+        int i = row - 1;
+        int j = col-1;
         rows.get(row).getColumn().add(col, figure);
         rows.get(row).getColumn().remove(col + 1);
 
@@ -108,9 +101,9 @@ public class Board extends BoardRow {
     @Override
     public String toString() {
         String board = "";
-        for (int row = 0; row < 8; row++) {
+        for (int row = 0; row < 9; row++) {
             board += "|";
-            for (int col = 0; col < 8; col++) {
+            for (int col = 0; col < 9; col++) {
                 board += rows.get(row).getColumn().get(col) + "|";
             }
             board += "\n";
@@ -118,5 +111,11 @@ public class Board extends BoardRow {
         return board;
     }
 
-}
+    public static void main(String[] args) {
+        Board board1 = new Board();
+        board1.createNewBoard();
+        board1.setFigure(1,2,new Pawn(Color.WHITE));
+        System.out.println(board1);
+    }
 
+}
