@@ -18,7 +18,7 @@ pl/maciejcieslik/checkers/logic/Board.java
  pl.maciejcieslik.checkers.logic.Board
 pl/maciejcieslik/checkers/logic/App.java
  pl.maciejcieslik.checkers.logic.App
-pl/maciejcieslik/checkers/GameController.java
- pl.maciejcieslik.checkers.GameController
 pl/maciejcieslik/checkers/Checkers.java
  pl.maciejcieslik.checkers.Checkers
+pl/maciejcieslik/checkers/GameController.java
+ pl.maciejcieslik.checkers.GameController

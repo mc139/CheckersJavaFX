@@ -76,13 +76,6 @@ public class Board extends BoardRow {
         return (Figure) rows.get(row).getColumn().get(col);
     }
 
-////    public Board(List<BoardRow> rows, List<Figure> cols) {
-////        this.rows = rows;
-////        this.cols = cols;
-////        for (int i = 0; i < 8; i++) {
-////            rows.add(new BoardRow());
-////        }
-//    }
 
     public void setFigure(int row, int col, Figure figure) {
         int i = row - 1;
@@ -92,10 +85,18 @@ public class Board extends BoardRow {
 
     }
 
-    public void createNewBoard() {
+//    public void createNewBoard() {
+//        for (BoardRow rowsIteration : rows) {
+//            rowsIteration.BoardRow();
+//        }
+//    }
+
+    public Board createNewBoard() {
+        Board board = new Board();
         for (BoardRow rowsIteration : rows) {
             rowsIteration.BoardRow();
         }
+        return board;
     }
 
     @Override
