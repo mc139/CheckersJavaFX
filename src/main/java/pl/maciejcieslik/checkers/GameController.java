@@ -4,13 +4,9 @@ package pl.maciejcieslik.checkers;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import pl.maciejcieslik.checkers.logic.Board;
-import pl.maciejcieslik.checkers.logic.Color;
-import pl.maciejcieslik.checkers.logic.Pawn;
-import pl.maciejcieslik.checkers.logic.Queen;
+import javafx.scene.shape.Rectangle;
+import pl.maciejcieslik.checkers.logic.*;
 
 import static pl.maciejcieslik.checkers.logic.Color.BLACK;
 import static pl.maciejcieslik.checkers.logic.Color.WHITE;
@@ -24,7 +20,7 @@ public class GameController {
     private int oldRow = -1;
 
     public Image pawnIMGWhite = new Image("file:src/main/resources/WhitePawnSmall.png");
-    public Image pawnIMGBlack = new Image("file:src/main/resources/BlackPawnSmall.png");
+    public Image pawnIMGBlack = new Image("file:src/main/resources/blackpawn.png");
     public Image queenIMGWhite = new Image("file:src/main/resources/WhiteQueenSmall.png");
     public Image queenIMGBlack = new Image("file:src/main/resources/BlackQueenSmall.png");
 
@@ -34,35 +30,29 @@ public class GameController {
         this.board = board;
     }
 
-    void gridPaneInit() {
-        for (int n = 0; n < 8; n++) {
-            grid.getColumnConstraints().add(new ColumnConstraints(135));
-            grid.getRowConstraints().add(new RowConstraints(135));
-        }
-    }
 
     void createBoard() {
 
         grid.setAlignment(Pos.CENTER);
         board.createNewBoard();
 
+        board.setFigure(0, 0, new Pawn(WHITE));
+        board.setFigure(0, 2, new Pawn(WHITE));
+        board.setFigure(0, 4, new Pawn(WHITE));
+        board.setFigure(0, 6, new Pawn(WHITE));
         board.setFigure(1, 1, new Pawn(WHITE));
         board.setFigure(1, 3, new Pawn(WHITE));
         board.setFigure(1, 5, new Pawn(WHITE));
         board.setFigure(1, 7, new Pawn(WHITE));
-        board.setFigure(2, 2, new Pawn(WHITE));
-        board.setFigure(2, 4, new Pawn(WHITE));
-        board.setFigure(2, 6, new Pawn(WHITE));
-        board.setFigure(2, 8, new Pawn(WHITE));
 
-        board.setFigure(8, 2, new Pawn(BLACK));
-        board.setFigure(8, 4, new Pawn(BLACK));
-        board.setFigure(8, 6, new Pawn(BLACK));
-        board.setFigure(8, 8, new Pawn(BLACK));
         board.setFigure(7, 1, new Pawn(BLACK));
         board.setFigure(7, 3, new Pawn(BLACK));
         board.setFigure(7, 5, new Pawn(BLACK));
         board.setFigure(7, 7, new Pawn(BLACK));
+        board.setFigure(6, 0, new Pawn(BLACK));
+        board.setFigure(6, 2, new Pawn(BLACK));
+        board.setFigure(6, 4, new Pawn(BLACK));
+        board.setFigure(6, 6, new Pawn(BLACK));
 
     }
 
@@ -71,55 +61,91 @@ public class GameController {
     }
 
     public void showOnBoard() {
+        grid.getChildren().clear();
 
-
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ImageView iv = null;
                 if (board.getFigure(row, col) instanceof Pawn) {
                     if (board.getFigure(row, col).getColor().equals(BLACK)) {
-                        ImageView pawnBlk = new ImageView(pawnIMGBlack);
-                        grid.add(pawnBlk, col - 1, row - 1);
-
+                        iv = new ImageView(pawnIMGBlack);
                     }
                     if (board.getFigure(row, col).getColor().equals(WHITE)) {
-                        ImageView pawnWht = new ImageView(pawnIMGWhite);
-                        grid.add(pawnWht, col - 1, row - 1);
+                        iv = new ImageView(pawnIMGWhite);
                     }
                 }
                 if (board.getFigure(row, col) instanceof Queen) {
                     if (board.getFigure(row, col).getColor().equals(BLACK)) {
-                        ImageView queenBlk = new ImageView(queenIMGBlack);
-                        grid.add(queenBlk, col - 1, row - 1);
+                        iv = new ImageView(queenIMGBlack);
 
                     }
                     if (board.getFigure(row, col).getColor().equals(BLACK)) {
-                        ImageView queenWht = new ImageView(queenIMGWhite);
-                        grid.add(queenWht, col - 1, row - 1);
+                        iv = new ImageView(queenIMGWhite);
 
-                    }
-                    if (board.getFigure(row, col) == null) {
-                        ImageView none = new ImageView();
+
                     }
                 }
+                if (iv != null)
+                    grid.add(iv, col, row);
+                if (col == oldCol && row == oldRow) {
+                    Rectangle rectangle = new Rectangle(135.5, 135.5);
+
+                    rectangle.setStroke(javafx.scene.paint.Color.RED);
+                    rectangle.setFill(javafx.scene.paint.Color.TRANSPARENT.darker().invert());
+                    grid.add(rectangle, col, row);
+                }
             }
+
         }
     }
+//
+//    public boolean takeOfThePiece(int oldRow, int oldCol,row,col,Figure figure){
+//        Figure f = board.getFigure(oldRow,oldCol);
+//        if(f.getColor().equals(board.getFigure()))
+//
+//    }
 
-    // w petli odczytywac figury z board przez getfigure i umieszczac odpowiednie obrazki na planszy
-    // dlaczego figury kopiuja sie na gridzie a na planszy sie przesuwaja ?
+    // Metoda ktora odpowiada za bicie pionów i zmiana koloru znacznika
 
 
+//    public void doClick(int col, int row) {
+//        Color color = board.getFigure(row, col).getColor();
+//        if (color == whoseMove || oldCol != -1) {
+//            if (oldCol == -1) {
+//                oldCol = col;
+//                oldRow = row;
+//            } else {
+//                if (board.move(oldRow, oldCol, row, col)) {
+//                    whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+//                    oldCol = -1;
+//                    oldRow = -1;
+//                }
+//            }
+//        } else {
+//            oldCol = -1;
+//            oldRow = -1;
+//        }
+//        showOnBoard();
+//    }
+
+
+    //Zrozumieć tę metode i sprobować zaimplementować funkcjonalnosci
     public void doClick(int col, int row) {
-        if (oldCol == -1) {
-            oldCol = col;
-            oldRow = row;
-
-        } else {
-            if (board.move(oldRow, oldCol, row, col)) {
-                whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-                oldCol = -1;
-                oldRow = -1;
+        Color color = board.getFigure(row, col).getColor();
+        if (color == whoseMove || oldCol != -1) {
+            if (oldCol == -1) {
+                oldCol = col;
+                oldRow = row;
+            } else {
+                if (board.move(oldRow, oldCol, row, col)) {
+                    whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+                    oldCol = -1;
+                    oldRow = -1;
+                }
             }
+        } else {
+            oldCol = -1;
+            oldRow = -1;
         }
         showOnBoard();
     }

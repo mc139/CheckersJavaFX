@@ -78,18 +78,8 @@ public class Board extends BoardRow {
 
 
     public void setFigure(int row, int col, Figure figure) {
-        int i = row - 1;
-        int j = col-1;
-        rows.get(row).getColumn().add(col, figure);
-        rows.get(row).getColumn().remove(col + 1);
-
+        rows.get(row).getColumn().set(col,figure);
     }
-
-//    public void createNewBoard() {
-//        for (BoardRow rowsIteration : rows) {
-//            rowsIteration.BoardRow();
-//        }
-//    }
 
     public Board createNewBoard() {
         Board board = new Board();

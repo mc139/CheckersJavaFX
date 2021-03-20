@@ -19,13 +19,13 @@ public class Checkers extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+        BackgroundSize backgroundSize = new BackgroundSize(103, 100, false, false, true, false);
         BackgroundImage backgroundImage = new BackgroundImage(boardImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         Background background = new Background(backgroundImage);
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.BOTTOM_CENTER);
-        grid.setPadding(new Insets(0, 0, 0, 12.5));
+        grid.setPadding(new Insets(0, 0, 0, 0));
         grid.setHgap(0);
         grid.setVgap(0);
         grid.setBackground(background);
@@ -35,13 +35,17 @@ public class Checkers extends Application {
         GameController controller = new GameController(grid, board);
         controller.createBoard();
         controller.showOnBoard();
+        grid.gridLinesVisibleProperty();
 
         Button newGameButton = new Button();
         newGameButton.setText("New Game");
         newGameButton.setOnAction((e) -> {
             controller.createBoard();
         });
-        controller.gridPaneInit();
+        for (int n = 0; n < 8; n++) {
+            grid.getColumnConstraints().add(new ColumnConstraints(135));
+            grid.getRowConstraints().add(new RowConstraints(135));
+        }
 
         Button debugButton = new Button();
         debugButton.setText("DEBUG");
@@ -49,7 +53,6 @@ public class Checkers extends Application {
             controller.ShowBoardOnConsole();
 
         });
-
         Button moveButton = new Button();
         moveButton.setText("MOVE");
         moveButton.setOnAction((e) -> {
@@ -60,13 +63,6 @@ public class Checkers extends Application {
         incorrectMove.setOnAction((e) -> {
             board.move(2, 6, 4, 7);
         });
-
-
-//        grid.add(newGameButton, 4, 4);
-//        grid.add(debugButton, 5, 5);
-//        grid.add(incorrectMove,3,3);
-//        grid.add(moveButton,2,5);
-
 
         grid.add(newGameButton, 4, 6);
         grid.add(debugButton, 4, 3);
@@ -82,14 +78,13 @@ public class Checkers extends Application {
         primaryStage.setMinWidth(1100);
         controller.showOnBoard();
 
-
         grid.setOnMouseClicked(e -> {
-            double y = e.getX() / 135;
-            double x = e.getY() / 135;
-            int xToInteger = (int) Math.round(x);
-            int yToInteger = (int) Math.round(y);
-            controller.doClick(xToInteger, yToInteger);
-            System.out.println("[" + xToInteger + ", " + yToInteger + "]");
+            int x = (int)e.getX() / 137;
+            int y = (int)e.getY() / 137;
+            System.out.println(e.getX());
+            System.out.println(e.getY());
+            controller.doClick(x, y);
+            System.out.println("[" + x + ", " + y + "]");
         });
 
     }
