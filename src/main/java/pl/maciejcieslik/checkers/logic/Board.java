@@ -15,6 +15,33 @@ public class Board extends BoardRow {
         }
     }
 
+    public void takeOff(int row1, int col1, int row2, int col2,Figure figure){
+        int rowAfterTakeOff =0;
+        int colAfterTakeOff =0;
+        if(row1 < row2 && col1 < col2){
+            // both axis increases
+            rowAfterTakeOff = row2+1;
+            colAfterTakeOff = col2+1;
+        } if(row1 > row2 && col1 > col2){
+            // both axis decreases
+            rowAfterTakeOff = row2-1;
+            colAfterTakeOff = col2-1;
+        } if(row1 > row2 && col1< col2){
+            //row decreases and col increases
+            rowAfterTakeOff = row2-1;
+            colAfterTakeOff = col2+1;
+        } if(row1 < row2 && col1 > col2 ){
+            //row increses and col decreses
+            rowAfterTakeOff = row2+1;
+            colAfterTakeOff = col2-1;
+        }
+
+        setFigure(rowAfterTakeOff,colAfterTakeOff,figure);
+        setFigure(row2,col2,new None());
+        // ruch diagonalny zawsze bedzie skakał w nastepna pozycje
+
+    }
+
     public boolean moveForPawn(int row1, int col1, int row2, int col2) {
         boolean isDiagonal = false;
         if (Math.abs(row2 - row1) == 1 && Math.abs(col2 - col1) == 1) {
@@ -24,10 +51,19 @@ public class Board extends BoardRow {
             System.out.println("Incorrect move !");
         }
         if (isDiagonal) {
+            Figure newPosFigure = getFigure(row2,col2);
             Figure figure = getFigure(row1, col1);
-            setFigure(row2, col2, figure);
-            setFigure(row1, col1, new None());
-            return true;
+            if(newPosFigure instanceof None){
+                setFigure(row2, col2, figure);
+                setFigure(row1, col1, new None());
+                return true;
+            }
+            if(figure.getColor() != newPosFigure.getColor()){
+               takeOff(row1,col1,row2,col2,figure);
+                setFigure(row1,col1,new None());
+                return  true;
+            }
+
         }
         return false;
     }
@@ -61,10 +97,16 @@ public class Board extends BoardRow {
     }
 
     public boolean move(int row1, int col1, int row2, int col2) {
-
+        Figure nextPosFigure = getFigure(row2,col2);
         Figure figure = getFigure(row1, col1);
 
         if (figure instanceof Pawn) {
+            if(nextPosFigure.getColor().equals(figure.getColor())){
+                System.out.println("Illegal MOVE !");
+                return  false;
+            } if(nextPosFigure.getColor() != figure.getColor()){
+                return moveForPawn(row1,col1,row2++,col2++);
+            }
             return moveForPawn(row1, col1, row2, col2);
         } else if (figure instanceof Queen) {
             return moveForQueen(row1, col1, row2, col2);

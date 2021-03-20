@@ -2,10 +2,12 @@ package pl.maciejcieslik.checkers;
 
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import pl.maciejcieslik.checkers.logic.*;
 
 import static pl.maciejcieslik.checkers.logic.Color.BLACK;
@@ -13,11 +15,15 @@ import static pl.maciejcieslik.checkers.logic.Color.WHITE;
 
 
 public class GameController {
-    private GridPane grid;
+    private static GridPane grid;
     private Board board;
     private Color whoseMove = Color.WHITE;
     private int oldCol = -1;
     private int oldRow = -1;
+
+    private static Label incorrectMoveStatus;
+    private static Label nextColorStatus;
+
 
     public Image pawnIMGWhite = new Image("file:src/main/resources/WhitePawnSmall.png");
     public Image pawnIMGBlack = new Image("file:src/main/resources/blackpawn.png");
@@ -98,6 +104,7 @@ public class GameController {
 
         }
     }
+
 //
 //    public boolean takeOfThePiece(int oldRow, int oldCol,row,col,Figure figure){
 //        Figure f = board.getFigure(oldRow,oldCol);
@@ -128,8 +135,17 @@ public class GameController {
 //        showOnBoard();
 //    }
 
-
     //Zrozumieć tę metode i sprobować zaimplementować funkcjonalnosci
+
+//    public static void showIncorrectMove() {
+//        Text incorrentMoveText = new Text("INCORRECT MOVE!") ;
+//        grid.add(incorrentMoveText, 4, 4);
+//        incorrectMoveStatus.setText("INCORRECT MOVE!");
+//        incorrectMoveStatus.autosize();
+//        incorrectMoveStatus.setAlignment(Pos.CENTER);
+//
+//    }
+
     public void doClick(int col, int row) {
         Color color = board.getFigure(row, col).getColor();
         if (color == whoseMove || oldCol != -1) {
@@ -149,5 +165,4 @@ public class GameController {
         }
         showOnBoard();
     }
-
 }
