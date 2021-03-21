@@ -22,21 +22,25 @@ public class Board extends BoardRow {
             // both axis increases
             rowAfterTakeOff = row2 + 1;
             colAfterTakeOff = col2 + 1;
+            setFigure(row1,col1,new None());
         }
         if (row1 > row2 && col1 > col2) {
             // both axis decreases
             rowAfterTakeOff = row2 - 1;
             colAfterTakeOff = col2 - 1;
+            setFigure(row1,col1,new None());
         }
         if (row1 > row2 && col1 < col2) {
             //row decreases and col increases
             rowAfterTakeOff = row2 - 1;
             colAfterTakeOff = col2 + 1;
+            setFigure(row1,col1,new None());
         }
         if (row1 < row2 && col1 > col2) {
             //row increases and col decreases
             rowAfterTakeOff = row2 + 1;
             colAfterTakeOff = col2 - 1;
+            setFigure(row1,col1,new None());
         }
         if (getFigure(rowAfterTakeOff, colAfterTakeOff) instanceof None) {
             setFigure(rowAfterTakeOff, colAfterTakeOff, figure);
@@ -68,7 +72,6 @@ public class Board extends BoardRow {
                 takeOff(row1, col1, row2, col2, figure);
                 return true;
             }
-
         }
         return false;
     }
@@ -121,7 +124,12 @@ public class Board extends BoardRow {
     }
 
     public Figure getFigure(int row, int col) {
-        return (Figure) rows.get(row).getColumn().get(col);
+        Object figure = rows.get(row).getColumn().get(col);
+        if(figure instanceof Pawn && ((Pawn) figure).getColor().equals(Color.WHITE) && row ==7) {
+            setFigure(row,col,new None());
+            setFigure(row,col,new Queen(Color.WHITE));
+        }
+        return (Figure) figure;
     }
 
 
