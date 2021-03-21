@@ -22,25 +22,25 @@ public class Board extends BoardRow {
             // both axis increases
             rowAfterTakeOff = row2 + 1;
             colAfterTakeOff = col2 + 1;
-            setFigure(row1,col1,new None());
+            setFigure(row1, col1, new None());
         }
         if (row1 > row2 && col1 > col2) {
             // both axis decreases
             rowAfterTakeOff = row2 - 1;
             colAfterTakeOff = col2 - 1;
-            setFigure(row1,col1,new None());
+            setFigure(row1, col1, new None());
         }
         if (row1 > row2 && col1 < col2) {
             //row decreases and col increases
             rowAfterTakeOff = row2 - 1;
             colAfterTakeOff = col2 + 1;
-            setFigure(row1,col1,new None());
+            setFigure(row1, col1, new None());
         }
         if (row1 < row2 && col1 > col2) {
             //row increases and col decreases
             rowAfterTakeOff = row2 + 1;
             colAfterTakeOff = col2 - 1;
-            setFigure(row1,col1,new None());
+            setFigure(row1, col1, new None());
         }
         if (getFigure(rowAfterTakeOff, colAfterTakeOff) instanceof None) {
             setFigure(rowAfterTakeOff, colAfterTakeOff, figure);
@@ -54,13 +54,14 @@ public class Board extends BoardRow {
 
     public boolean moveForPawn(int row1, int col1, int row2, int col2) {
         boolean isDiagonal = false;
+        boolean isQueen = false;
         if (Math.abs(row2 - row1) == 1 && Math.abs(col2 - col1) == 1) {
             isDiagonal = true;
         } else {
             isDiagonal = false;
             System.out.println("Incorrect move !");
         }
-        if (isDiagonal) {
+        if (isDiagonal && isQueen == false) {
             Figure newPosFigure = getFigure(row2, col2);
             Figure figure = getFigure(row1, col1);
             if (newPosFigure instanceof None) {
@@ -72,21 +73,30 @@ public class Board extends BoardRow {
                 takeOff(row1, col1, row2, col2, figure);
                 return true;
             }
+//            if (row1 == 0 && figure.getColor().equals(Color.BLACK)) {
+//                setFigure(row1, col1, new Queen(Color.BLACK));
+//            }
+//            if (row1 == 7 && figure.getColor().equals(Color.WHITE)) {
+//                setFigure(row1, col1, new Queen(Color.WHITE));
+//            }
         }
         return false;
     }
 
+    // TO DO
+    // Correct takeOffs for queen and some correction of assets.
+
     public boolean moveForQueen(int row1, int col1, int row2, int col2) {
         boolean isDiagonal = false;
-        if (Math.abs(row2 - row1) == Math.abs(col2 - col1)) {
-            isDiagonal = true;
-        } else {
-            isDiagonal = false;
-        }
-        if (isDiagonal) {
-            Figure figure = getFigure(row1, col1);
+        Figure newPosFigure = getFigure(row2, col2);
+        Figure figure = getFigure(row1, col1);
+        if (newPosFigure instanceof None) {
             setFigure(row2, col2, figure);
             setFigure(row1, col1, new None());
+            return true;
+        }
+        if (figure.getColor() != newPosFigure.getColor()) {
+            takeOff(row1, col1, row2, col2, figure);
             return true;
         }
         return false;
@@ -103,7 +113,7 @@ public class Board extends BoardRow {
         }
 
     }
-
+ //!!
     public boolean move(int row1, int col1, int row2, int col2) {
         Figure nextPosFigure = getFigure(row2, col2);
         Figure figure = getFigure(row1, col1);
@@ -125,9 +135,12 @@ public class Board extends BoardRow {
 
     public Figure getFigure(int row, int col) {
         Object figure = rows.get(row).getColumn().get(col);
-        if(figure instanceof Pawn && ((Pawn) figure).getColor().equals(Color.WHITE) && row ==7) {
-            setFigure(row,col,new None());
-            setFigure(row,col,new Queen(Color.WHITE));
+        if (figure instanceof Pawn && ((Pawn) figure).getColor().equals(Color.WHITE) && row == 7) {
+            setFigure(row, col, new None());
+            setFigure(row, col, new Queen(Color.WHITE));
+        } if (figure instanceof Pawn && ((Pawn) figure).getColor().equals(Color.BLACK) && row == 0){
+            setFigure(row, col, new None());
+            setFigure(row, col, new Queen(Color.BLACK));
         }
         return (Figure) figure;
     }

@@ -60,7 +60,7 @@ public class GameController {
 
     }
 
-    void ShowBoardOnConsole() {
+   public void ShowBoardOnConsole() {
         System.out.println(board.toString());
     }
 
@@ -82,9 +82,8 @@ public class GameController {
                     if (board.getFigure(row, col).getColor().equals(BLACK)) {
                         iv = new ImageView(queenIMGBlack);
                     }
-                    if (board.getFigure(row, col).getColor().equals(BLACK)) {
+                    if (board.getFigure(row, col).getColor().equals(WHITE)) {
                         iv = new ImageView(queenIMGWhite);
-
                     }
                 }
                 if (iv != null)
@@ -118,5 +117,6 @@ public class GameController {
             oldRow = -1;
         }
         showOnBoard();
+        ShowBoardOnConsole();
     }
 }
