@@ -60,7 +60,7 @@ public class GameController {
 
     }
 
-   public void ShowBoardOnConsole() {
+    public void ShowBoardOnConsole() {
         System.out.println(board.toString());
     }
 

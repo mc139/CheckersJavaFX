@@ -8,9 +8,30 @@ public class Board extends BoardRow {
     private List<BoardRow> rows = new ArrayList<>();
     private List<Figure> cols = new ArrayList<>();
 
+    int rowAfterTakeOff;
+    int colAfterTakeOff;
+
+    public class Range {
+        private int low;
+        private int high;
+
+        public Range(int low, int high) {
+            this.low = low;
+            this.high = high;
+        }
+
+        public boolean contains(int number) {
+            return (number >= low && number <= high);
+        }
+    }
+
+    Range rangeAfterTakeOff = new Range(0, 7);
+    Range rangeBeforeTakeOff = new Range(1, 6);
+    boolean moveIsCorrect = rangeAfterTakeOff.contains(rowAfterTakeOff) && rangeAfterTakeOff.contains(colAfterTakeOff) ? true : false;
+
 
     public Board() {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             rows.add(new BoardRow());
         }
     }
@@ -18,38 +39,41 @@ public class Board extends BoardRow {
     public void takeOff(int row1, int col1, int row2, int col2, Figure figure) {
         int rowAfterTakeOff = 0;
         int colAfterTakeOff = 0;
-        if (row1 < row2 && col1 < col2) {
-            // both axis increases
-            rowAfterTakeOff = row2 + 1;
-            colAfterTakeOff = col2 + 1;
-            setFigure(row1, col1, new None());
+        boolean nonBorderLocation = rangeBeforeTakeOff.contains(row2) && rangeBeforeTakeOff.contains(col2) ? true : false;
+
+        if (moveIsCorrect && nonBorderLocation) {
+            if (row1 < row2 && col1 < col2) {
+                // both axis increases
+                rowAfterTakeOff = row2 + 1;
+                colAfterTakeOff = col2 + 1;
+                setFigure(row1, col1, new None());
+            }
+            if (row1 > row2 && col1 > col2) {
+                // both axis decreases
+                rowAfterTakeOff = row2 - 1;
+                colAfterTakeOff = col2 - 1;
+                setFigure(row1, col1, new None());
+            }
+            if (row1 > row2 && col1 < col2) {
+                //row decreases and col increases
+                rowAfterTakeOff = row2 - 1;
+                colAfterTakeOff = col2 + 1;
+                setFigure(row1, col1, new None());
+            }
+            if (row1 < row2 && col1 > col2) {
+                //row increases and col decreases
+                rowAfterTakeOff = row2 + 1;
+                colAfterTakeOff = col2 - 1;
+                setFigure(row1, col1, new None());
+            }
+            if (getFigure(rowAfterTakeOff, colAfterTakeOff) instanceof None) {
+                setFigure(rowAfterTakeOff, colAfterTakeOff, figure);
+                setFigure(row2, col2, new None());
+            }
         }
-        if (row1 > row2 && col1 > col2) {
-            // both axis decreases
-            rowAfterTakeOff = row2 - 1;
-            colAfterTakeOff = col2 - 1;
-            setFigure(row1, col1, new None());
-        }
-        if (row1 > row2 && col1 < col2) {
-            //row decreases and col increases
-            rowAfterTakeOff = row2 - 1;
-            colAfterTakeOff = col2 + 1;
-            setFigure(row1, col1, new None());
-        }
-        if (row1 < row2 && col1 > col2) {
-            //row increases and col decreases
-            rowAfterTakeOff = row2 + 1;
-            colAfterTakeOff = col2 - 1;
-            setFigure(row1, col1, new None());
-        }
-        if (getFigure(rowAfterTakeOff, colAfterTakeOff) instanceof None) {
-            setFigure(rowAfterTakeOff, colAfterTakeOff, figure);
-            setFigure(row2, col2, new None());
-        } else {
-            setFigure(row1, col1, figure);
+        if (!moveIsCorrect) {
             System.out.println("INCORRECT MOVE");
         }
-
     }
 
     public boolean moveForPawn(int row1, int col1, int row2, int col2) {
@@ -61,7 +85,7 @@ public class Board extends BoardRow {
             isDiagonal = false;
             System.out.println("Incorrect move !");
         }
-        if (isDiagonal && isQueen == false) {
+        if (isDiagonal && isQueen == false && moveIsCorrect) {
             Figure newPosFigure = getFigure(row2, col2);
             Figure figure = getFigure(row1, col1);
             if (newPosFigure instanceof None) {
@@ -69,22 +93,16 @@ public class Board extends BoardRow {
                 setFigure(row1, col1, new None());
                 return true;
             }
-            if (figure.getColor() != newPosFigure.getColor()) {
+            if (figure.getColor() != newPosFigure.getColor() && moveIsCorrect) {
                 takeOff(row1, col1, row2, col2, figure);
                 return true;
             }
-//            if (row1 == 0 && figure.getColor().equals(Color.BLACK)) {
-//                setFigure(row1, col1, new Queen(Color.BLACK));
-//            }
-//            if (row1 == 7 && figure.getColor().equals(Color.WHITE)) {
-//                setFigure(row1, col1, new Queen(Color.WHITE));
-//            }
         }
         return false;
     }
 
     // TO DO
-    // Correct takeOffs for queen and some correction of assets.
+    // multi TakeOff
 
     public boolean moveForQueen(int row1, int col1, int row2, int col2) {
         boolean isDiagonal = false;
@@ -102,33 +120,24 @@ public class Board extends BoardRow {
         return false;
     }
 
-
-    public void availableMoves(int row1, int col1, int row2, int col2) {
-        Figure figureToCheck = getFigure(row1, col1);
-        boolean isQueen = false;
-        if (figureToCheck instanceof Pawn) {
-            isQueen = false;
-        } else if (figureToCheck.toString().contains("q")) {
-            isQueen = true;
-        }
-
-    }
- //!!
     public boolean move(int row1, int col1, int row2, int col2) {
         Figure nextPosFigure = getFigure(row2, col2);
         Figure figure = getFigure(row1, col1);
 
-        if (figure instanceof Pawn) {
-            if (nextPosFigure.getColor().equals(figure.getColor())) {
-                System.out.println("Illegal MOVE !");
-                return false;
+
+        if (moveIsCorrect) {
+            if (figure instanceof Pawn) {
+                if (nextPosFigure.getColor().equals(figure.getColor())) {
+                    System.out.println("Illegal MOVE !");
+                    return false;
+                }
+                if (nextPosFigure.getColor() != figure.getColor()) {
+                    return moveForPawn(row1, col1, row2++, col2++);
+                }
+                return moveForPawn(row1, col1, row2, col2);
+            } else if (figure instanceof Queen) {
+                return moveForQueen(row1, col1, row2, col2);
             }
-            if (nextPosFigure.getColor() != figure.getColor()) {
-                return moveForPawn(row1, col1, row2++, col2++);
-            }
-            return moveForPawn(row1, col1, row2, col2);
-        } else if (figure instanceof Queen) {
-            return moveForQueen(row1, col1, row2, col2);
         }
         return false;
     }
@@ -138,7 +147,8 @@ public class Board extends BoardRow {
         if (figure instanceof Pawn && ((Pawn) figure).getColor().equals(Color.WHITE) && row == 7) {
             setFigure(row, col, new None());
             setFigure(row, col, new Queen(Color.WHITE));
-        } if (figure instanceof Pawn && ((Pawn) figure).getColor().equals(Color.BLACK) && row == 0){
+        }
+        if (figure instanceof Pawn && ((Pawn) figure).getColor().equals(Color.BLACK) && row == 0) {
             setFigure(row, col, new None());
             setFigure(row, col, new Queen(Color.BLACK));
         }
@@ -161,9 +171,9 @@ public class Board extends BoardRow {
     @Override
     public String toString() {
         String board = "";
-        for (int row = 0; row < 9; row++) {
+        for (int row = 0; row < 8; row++) {
             board += "|";
-            for (int col = 0; col < 9; col++) {
+            for (int col = 0; col < 8; col++) {
                 board += rows.get(row).getColumn().get(col) + "|";
             }
             board += "\n";

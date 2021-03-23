@@ -22,3 +22,4 @@ pl/maciejcieslik/checkers/GameController.java
  pl.maciejcieslik.checkers.GameController
 pl/maciejcieslik/checkers/logic/Board.java
  pl.maciejcieslik.checkers.logic.Board
+ pl.maciejcieslik.checkers.logic.Board$Range

@@ -25,7 +25,7 @@ public class Checkers extends Application {
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.BOTTOM_CENTER);
-        grid.setPadding(new Insets(0, 0, 0, 0));
+        grid.setPadding(new Insets(0, 1, 1, 0));
         grid.setHgap(0);
         grid.setVgap(0);
         grid.setBackground(background);
