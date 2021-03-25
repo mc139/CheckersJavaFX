@@ -6,10 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
-import pl.maciejcieslik.checkers.logic.Board;
-import pl.maciejcieslik.checkers.logic.Color;
-import pl.maciejcieslik.checkers.logic.Pawn;
-import pl.maciejcieslik.checkers.logic.Queen;
+import pl.maciejcieslik.checkers.logic.*;
 
 import static pl.maciejcieslik.checkers.logic.Color.BLACK;
 import static pl.maciejcieslik.checkers.logic.Color.WHITE;
@@ -99,6 +96,32 @@ public class GameController {
         }
     }
 
+//    public void doClick(int col, int row) {
+//        Color color = board.getFigure(row, col).getColor();
+//        if (color == whoseMove || oldCol != -1) {
+//            if (oldCol == -1) {
+//                oldCol = col;
+//                oldRow = row;
+//            } else {
+//                if (board.move(oldRow, oldCol, row, col)) {
+//                    Figure currentFigure = board.getFigure(row, col);
+//                    if (nextTakeOffAvaible) {
+//                        whoseMove = currentFigure.getColor();
+//                    } else {
+//                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+//                        oldCol = -1;
+//                        oldRow = -1;
+//                    }
+//                }
+//            }
+//        } else {
+//            oldCol = -1;
+//            oldRow = -1;
+//        }
+//        showOnBoard();
+//        ShowBoardOnConsole();
+//    }
+//
     public void doClick(int col, int row) {
         Color color = board.getFigure(row, col).getColor();
         if (color == whoseMove || oldCol != -1) {

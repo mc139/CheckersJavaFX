@@ -7,6 +7,7 @@ import java.util.List;
 public class Board extends BoardRow {
     private List<BoardRow> rows = new ArrayList<>();
     private List<Figure> cols = new ArrayList<>();
+    private boolean isMultiTakeOffAvailable;
 
     int rowAfterTakeOff;
     int colAfterTakeOff;
@@ -27,7 +28,7 @@ public class Board extends BoardRow {
 
     Range rangeAfterTakeOff = new Range(0, 7);
     Range rangeBeforeTakeOff = new Range(1, 6);
-    boolean moveIsCorrect = rangeAfterTakeOff.contains(rowAfterTakeOff) && rangeAfterTakeOff.contains(colAfterTakeOff) ? true : false;
+    private boolean moveIsCorrect = rangeAfterTakeOff.contains(rowAfterTakeOff) && rangeAfterTakeOff.contains(colAfterTakeOff) ? true : false;
 
 
     public Board() {
@@ -124,7 +125,6 @@ public class Board extends BoardRow {
         Figure nextPosFigure = getFigure(row2, col2);
         Figure figure = getFigure(row1, col1);
 
-
         if (moveIsCorrect) {
             if (figure instanceof Pawn) {
                 if (nextPosFigure.getColor().equals(figure.getColor())) {
@@ -154,7 +154,6 @@ public class Board extends BoardRow {
         }
         return (Figure) figure;
     }
-
 
     public void setFigure(int row, int col, Figure figure) {
         rows.get(row).getColumn().set(col, figure);
