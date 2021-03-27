@@ -37,11 +37,29 @@ public class GameController {
         grid.setAlignment(Pos.CENTER);
         board.createNewBoard();
 
+//        board.setFigure(0, 0, new Pawn(WHITE));
+//        board.setFigure(0, 2, new Pawn(WHITE));
+//        board.setFigure(0, 4, new Pawn(WHITE));
+//        board.setFigure(0, 6, new Pawn(WHITE));
+//        board.setFigure(1, 1, new Pawn(WHITE));
+//        board.setFigure(1, 3, new Pawn(WHITE));
+//        board.setFigure(1, 5, new Pawn(WHITE));
+//        board.setFigure(1, 7, new Pawn(WHITE));
+//
+//        board.setFigure(7, 1, new Pawn(BLACK));
+//        board.setFigure(7, 3, new Pawn(BLACK));
+//        board.setFigure(7, 5, new Pawn(BLACK));
+//        board.setFigure(7, 7, new Pawn(BLACK));
+//        board.setFigure(6, 0, new Pawn(BLACK));
+//        board.setFigure(6, 2, new Pawn(BLACK));
+//        board.setFigure(6, 4, new Pawn(BLACK));
+//        board.setFigure(6, 6, new Pawn(BLACK));
+
         board.setFigure(0, 0, new Pawn(WHITE));
         board.setFigure(0, 2, new Pawn(WHITE));
         board.setFigure(0, 4, new Pawn(WHITE));
         board.setFigure(0, 6, new Pawn(WHITE));
-        board.setFigure(1, 1, new Pawn(WHITE));
+        board.setFigure(5, 1, new Pawn(WHITE));
         board.setFigure(1, 3, new Pawn(WHITE));
         board.setFigure(1, 5, new Pawn(WHITE));
         board.setFigure(1, 7, new Pawn(WHITE));
@@ -96,6 +114,42 @@ public class GameController {
         }
     }
 
+    public void doClick(int col, int row) {
+        Color color = board.getFigure(row, col).getColor();
+        if (color == whoseMove || oldCol != -1) {
+            if (oldCol == -1) {
+                oldCol = col;
+                oldRow = row;
+            } else {
+                if (board.move(oldRow, oldCol, row, col)) {
+                    Figure currentFigure = board.getFigure(row, col);
+                    if (board.isMultiTakeOff()) {
+                        oldCol = board.getColAfterTakeOff();
+                        oldRow = board.getRowAfterTakeOff();
+                        whoseMove = currentFigure.getColor();
+                    }
+                    if (!board.isMultiTakeOff()) {
+                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+                        oldCol = -1;
+                        oldRow = -1;
+                    }
+                }
+//                    } else {
+//                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+//                        oldCol = -1;
+//                        oldRow = -1;
+//                    }
+                }
+
+        } else {
+            oldCol = -1;
+            oldRow = -1;
+        }
+        showOnBoard();
+        ShowBoardOnConsole();
+    }
+}
+//
 //    public void doClick(int col, int row) {
 //        Color color = board.getFigure(row, col).getColor();
 //        if (color == whoseMove || oldCol != -1) {
@@ -103,15 +157,13 @@ public class GameController {
 //                oldCol = col;
 //                oldRow = row;
 //            } else {
-//                if (board.move(oldRow, oldCol, row, col)) {
-//                    Figure currentFigure = board.getFigure(row, col);
-//                    if (nextTakeOffAvaible) {
-//                        whoseMove = currentFigure.getColor();
-//                    } else {
-//                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-//                        oldCol = -1;
-//                        oldRow = -1;
-//                    }
+//                if (board.move(oldRow, oldCol, row, col) && !board.isMultiTakeOff()) {
+//                    whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+//                    oldCol = -1;
+//                    oldRow = -1;
+//                } if (board.move(oldRow, oldCol, row, col) && board.isMultiTakeOff()){
+//                    oldCol = -1;
+//                    oldRow = -1;
 //                }
 //            }
 //        } else {
@@ -121,25 +173,4 @@ public class GameController {
 //        showOnBoard();
 //        ShowBoardOnConsole();
 //    }
-//
-    public void doClick(int col, int row) {
-        Color color = board.getFigure(row, col).getColor();
-        if (color == whoseMove || oldCol != -1) {
-            if (oldCol == -1) {
-                oldCol = col;
-                oldRow = row;
-            } else {
-                if (board.move(oldRow, oldCol, row, col)) {
-                    whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-                    oldCol = -1;
-                    oldRow = -1;
-                }
-            }
-        } else {
-            oldCol = -1;
-            oldRow = -1;
-        }
-        showOnBoard();
-        ShowBoardOnConsole();
-    }
-}
+//}
