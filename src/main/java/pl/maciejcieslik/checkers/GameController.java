@@ -11,56 +11,34 @@ import pl.maciejcieslik.checkers.logic.*;
 import static pl.maciejcieslik.checkers.logic.Color.BLACK;
 import static pl.maciejcieslik.checkers.logic.Color.WHITE;
 
-
 public class GameController {
     private static GridPane grid;
-    private Board board;
+    private final Board board;
     private Color whoseMove = Color.WHITE;
     private int oldCol = -1;
     private int oldRow = -1;
-
 
     public Image pawnIMGWhite = new Image("file:src/main/resources/WhitePawnSmall.png");
     public Image pawnIMGBlack = new Image("file:src/main/resources/blackpawn.png");
     public Image queenIMGWhite = new Image("file:src/main/resources/WhiteQueenSmall.png");
     public Image queenIMGBlack = new Image("file:src/main/resources/BlackQueenSmall.png");
 
-
     public GameController(GridPane grid, Board board) {
-        this.grid = grid;
+        GameController.grid = grid;
         this.board = board;
     }
-
 
     void createBoard() {
 
         grid.setAlignment(Pos.CENTER);
         board.createNewBoard();
 
-//        board.setFigure(0, 0, new Pawn(WHITE));
-//        board.setFigure(0, 2, new Pawn(WHITE));
-//        board.setFigure(0, 4, new Pawn(WHITE));
-//        board.setFigure(0, 6, new Pawn(WHITE));
-//        board.setFigure(1, 1, new Pawn(WHITE));
-//        board.setFigure(1, 3, new Pawn(WHITE));
-//        board.setFigure(1, 5, new Pawn(WHITE));
-//        board.setFigure(1, 7, new Pawn(WHITE));
-//
-//        board.setFigure(7, 1, new Pawn(BLACK));
-//        board.setFigure(7, 3, new Pawn(BLACK));
-//        board.setFigure(7, 5, new Pawn(BLACK));
-//        board.setFigure(7, 7, new Pawn(BLACK));
-//        board.setFigure(6, 0, new Pawn(BLACK));
-//        board.setFigure(6, 2, new Pawn(BLACK));
-//        board.setFigure(6, 4, new Pawn(BLACK));
-//        board.setFigure(6, 6, new Pawn(BLACK));
-
         board.setFigure(0, 0, new Pawn(WHITE));
         board.setFigure(0, 2, new Pawn(WHITE));
         board.setFigure(0, 4, new Pawn(WHITE));
         board.setFigure(0, 6, new Pawn(WHITE));
-        board.setFigure(5, 1, new Pawn(WHITE));
-        board.setFigure(3, 1, new Pawn(WHITE));
+        board.setFigure(1, 1, new Pawn(WHITE));
+        board.setFigure(1, 3, new Pawn(WHITE));
         board.setFigure(1, 5, new Pawn(WHITE));
         board.setFigure(1, 7, new Pawn(WHITE));
 
@@ -131,61 +109,3 @@ public class GameController {
         }
     }
 }
-
-//
-//    public void doClick(int col, int row) {
-//        Color color = board.getFigure(row, col).getColor();
-//        if (color == whoseMove || oldCol != -1) {
-//            if (oldCol == -1) {
-//                oldCol = col;
-//                oldRow = row;
-//            } else {
-//                board.move(oldRow, oldCol, row, col);
-//                oldRow = -1;
-//                oldCol = -1;
-//                whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-//            }
-//
-//
-//            showOnBoard();
-//            ShowBoardOnConsole();
-//        }
-//    }
-//}
-
-//    public void doClick(int col, int row) {
-//        Color color = board.getFigure(row, col).getColor();
-//        if (color == whoseMove || oldCol != -1) {
-//            if (oldCol == -1) {
-//                oldCol = col;
-//                oldRow = row;
-//            } else {
-//                if (board.move(oldRow, oldCol, row, col)) {
-//                    Figure currentFigure = board.getFigure(row, col);
-//                    if (!board.isMoveFinished()) {
-//                        oldCol = board.getColAfterTakeOff();
-//                        oldRow = board.getRowAfterTakeOff();
-//                        whoseMove = currentFigure.getColor();
-//                    }
-//                    if (board.isMoveFinished()) {
-//                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-//                        oldCol = -1;
-//                        oldRow = -1;
-//                    }
-//                }
-////                    } else {
-////                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-////                        oldCol = -1;
-////                        oldRow = -1;
-////                    }
-//            }
-//
-//        } else {
-//            oldCol = -1;
-//            oldRow = -1;
-//        }
-//        showOnBoard();
-//        ShowBoardOnConsole();
-//    }
-//}
-

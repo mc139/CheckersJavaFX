@@ -14,7 +14,7 @@ public class BoardRow {
         return columns;
     }
 
-    public List getColumn() {
+    public List<Figure> getColumn() {
         return columns;
     }
 }
