@@ -11,5 +11,4 @@ public class Figure {
     public Color getColor() {
         return color;
     }
-
 }

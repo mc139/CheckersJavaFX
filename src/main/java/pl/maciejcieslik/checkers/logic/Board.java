@@ -3,7 +3,6 @@ package pl.maciejcieslik.checkers.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Board extends BoardRow {
     private List<BoardRow> rows = new ArrayList<>();
     private List<Figure> cols = new ArrayList<>();
@@ -13,22 +12,11 @@ public class Board extends BoardRow {
     private int rowAfterTakeOff;
     private int colAfterTakeOff;
     private boolean moveIsCorrect = rangeAfterTakeOff.contains(rowAfterTakeOff) && rangeAfterTakeOff.contains(colAfterTakeOff) ? true : false;
-    private boolean multiTakeOff;
-    boolean nonBorderLocation;
+    boolean moveFinished;
 
-
-    public boolean isMultiTakeOff() {
-        return multiTakeOff;
+    public boolean isMoveFinished() {
+        return moveFinished;
     }
-
-    public void setRowAfterTakeOff(int rowAfterTakeOff) {
-        this.rowAfterTakeOff = rowAfterTakeOff;
-    }
-
-    public void setColAfterTakeOff(int colAfterTakeOff) {
-        this.colAfterTakeOff = colAfterTakeOff;
-    }
-
 
     public Board() {
         for (int i = 0; i < 8; i++) {
@@ -37,8 +25,6 @@ public class Board extends BoardRow {
     }
 
     public void takeOff(int row1, int col1, int row2, int col2, Figure figure) {
-        int rowAfterTakeOff = 0;
-        int colAfterTakeOff = 0;
         boolean nonBorderLocation = rangeBeforeTakeOff.contains(row2) && rangeBeforeTakeOff.contains(col2) ? true : false;
         boolean isPositionEmpty = getFigure(rowAfterTakeOff, colAfterTakeOff) instanceof None ? true : false;
 
@@ -49,9 +35,15 @@ public class Board extends BoardRow {
                 colAfterTakeOff = col2 + 1;
                 if (isPositionEmpty) {
                     setFigure(row1, col1, new None());
+                    if (isMultiTakeOffAvailable(rowAfterTakeOff, colAfterTakeOff, figure)) {
+                        moveFinished = false;
+                    }
                 } else {
                     setFigure(row1, col1, figure);
+                    System.out.println("multi takeOff unavailable");
+                    moveFinished = true;
                 }
+                moveFinished = true;
             }
             if (row1 > row2 && col1 > col2) {
                 // both axis decreases
@@ -59,9 +51,15 @@ public class Board extends BoardRow {
                 colAfterTakeOff = col2 - 1;
                 if (isPositionEmpty) {
                     setFigure(row1, col1, new None());
+                    if (isMultiTakeOffAvailable(rowAfterTakeOff, colAfterTakeOff, figure)) {
+                        moveFinished = false;
+                    }
                 } else {
                     setFigure(row1, col1, figure);
+                    System.out.println("multi takeOff unavailable");
+                    moveFinished = true;
                 }
+                moveFinished = true;
             }
             if (row1 > row2 && col1 < col2) {
                 //row decreases and col increases
@@ -69,9 +67,15 @@ public class Board extends BoardRow {
                 colAfterTakeOff = col2 + 1;
                 if (isPositionEmpty) {
                     setFigure(row1, col1, new None());
+                    if (isMultiTakeOffAvailable(rowAfterTakeOff, colAfterTakeOff, figure)) {
+                        moveFinished = false;
+                    }
                 } else {
                     setFigure(row1, col1, figure);
+                    System.out.println("multi takeOff unavailable");
+                    moveFinished = true;
                 }
+                moveFinished = true;
             }
             if (row1 < row2 && col1 > col2) {
                 //row increases and col decreases
@@ -79,39 +83,82 @@ public class Board extends BoardRow {
                 colAfterTakeOff = col2 - 1;
                 if (isPositionEmpty) {
                     setFigure(row1, col1, new None());
+                    if (isMultiTakeOffAvailable(rowAfterTakeOff, colAfterTakeOff, figure)) {
+                        moveFinished = false;
+                    }
                 } else {
                     setFigure(row1, col1, figure);
+                    System.out.println("multi takeOff unavailable");
+                    moveFinished = true;
                 }
-            }
-            if (getFigure(rowAfterTakeOff, colAfterTakeOff) instanceof None) {
-                setFigure(rowAfterTakeOff, colAfterTakeOff, figure);
-                setFigure(row2, col2, new None());
-                setFigure(row1,col1,new None());
+                moveFinished = true;
             }
         }
-        if (!moveIsCorrect) {
-            System.out.println("INCORRECT MOVE");
+        if (getFigure(rowAfterTakeOff, colAfterTakeOff) instanceof None) {
+            setFigure(rowAfterTakeOff, colAfterTakeOff, figure);
+            setFigure(row2, col2, new None());
+            setFigure(row1, col1, new None());
+        }if (isMultiTakeOffAvailable(colAfterTakeOff,rowAfterTakeOff,figure)){
+            moveFinished = false;
         }
+
+
+//        if (!moveIsCorrect) {
+//            System.out.println("INCORRECT MOVE");
+//        }
     }
 
 
-    public boolean checkFiguresAround(int currentCol, int currentRow, Figure figure) {
-        if (moveIsCorrect) {
-            if (getFigure(currentCol + 1, currentRow + 1).getColor() != figure.getColor()) {
-                return true;
-            }
-            if (getFigure(currentCol - 1, currentRow - 1).getColor() != figure.getColor()) {
-                return true;
-            }
-            if (getFigure(currentCol + 1, currentRow - 1).getColor() != figure.getColor()) {
-                return true;
-            }
-            if (getFigure(currentCol - 1, currentRow + 1).getColor() != figure.getColor()) {
-                return true;
-            }
+
+
+    public boolean isMultiTakeOffAvailable(int currentCol, int currentRow, Figure figure) {
+        int rowAfterAnotherTakeOff = 0;
+        int colAfterAnotherTakeOff = 0;
+//        boolean isPositionEmpty = getFigure(rowAfterAnotherTakeOff,colAfterAnotherTakeOff) instanceof None || null ? true : false;
+
+        //if (moveIsCorrect) {
+
+        if (getFigure(currentCol + 1, currentRow + 1).getColor() != figure.getColor()) {
+            System.out.println("Multi takeOff Available!");
+            return true;
+        } else if (getFigure(currentCol - 1, currentRow - 1).getColor() != figure.getColor()) {
+            System.out.println("Multi takeOff Available!");
+            return true;
+        } else if (getFigure(currentCol + 1, currentRow - 1).getColor() != figure.getColor()) {
+            System.out.println("Multi takeOff Available!");
+            return true;
+        } else if (getFigure(currentCol - 1, currentRow + 1).getColor() != figure.getColor()) {
+            System.out.println("Multi takeOff Available!");
+            return true;
+        } else {
+            return false;
         }
-        return false;
+
+
     }
+
+//    public boolean isMultiTakeOffAvailable(int currentCol, int currentRow, Figure figure) {
+//
+//        //if (moveIsCorrect) {
+//
+//            if (getFigure(currentCol + 1, currentRow + 1).getColor() != figure.getColor()) {
+//                System.out.println("Multi takeOff Available!");
+//                return true;
+//            } else if (getFigure(currentCol - 1, currentRow - 1).getColor() != figure.getColor()) {
+//                System.out.println("Multi takeOff Available!");
+//                return true;
+//            } else if (getFigure(currentCol + 1, currentRow - 1).getColor() != figure.getColor()) {
+//                System.out.println("Multi takeOff Available!");
+//                return true;
+//            } else if (getFigure(currentCol - 1, currentRow + 1).getColor() != figure.getColor()) {
+//                System.out.println("Multi takeOff Available!");
+//                return true;
+//            } else {
+//                return false;
+//            }
+//
+//
+//    }
 
     public boolean moveForPawn(int row1, int col1, int row2, int col2) {
         boolean isDiagonal = false;
@@ -137,9 +184,6 @@ public class Board extends BoardRow {
         }
         return false;
     }
-
-    // TO DO
-    // multi TakeOff
 
     public boolean moveForQueen(int row1, int col1, int row2, int col2) {
         boolean isDiagonal = false;
@@ -174,6 +218,7 @@ public class Board extends BoardRow {
             } else if (figure instanceof Queen) {
                 return moveForQueen(row1, col1, row2, col2);
             }
+            moveFinished = true;
         }
         return false;
     }
@@ -222,13 +267,6 @@ public class Board extends BoardRow {
             board += "\n";
         }
         return board;
-    }
-
-    public static void main(String[] args) {
-        Board board1 = new Board();
-        board1.createNewBoard();
-        board1.setFigure(1, 2, new Pawn(Color.WHITE));
-        System.out.println(board1);
     }
 
 }

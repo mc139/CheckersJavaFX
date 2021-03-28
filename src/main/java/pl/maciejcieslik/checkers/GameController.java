@@ -60,7 +60,7 @@ public class GameController {
         board.setFigure(0, 4, new Pawn(WHITE));
         board.setFigure(0, 6, new Pawn(WHITE));
         board.setFigure(5, 1, new Pawn(WHITE));
-        board.setFigure(1, 3, new Pawn(WHITE));
+        board.setFigure(3, 1, new Pawn(WHITE));
         board.setFigure(1, 5, new Pawn(WHITE));
         board.setFigure(1, 7, new Pawn(WHITE));
 
@@ -121,34 +121,17 @@ public class GameController {
                 oldCol = col;
                 oldRow = row;
             } else {
-                if (board.move(oldRow, oldCol, row, col)) {
-                    Figure currentFigure = board.getFigure(row, col);
-                    if (board.isMultiTakeOff()) {
-                        oldCol = board.getColAfterTakeOff();
-                        oldRow = board.getRowAfterTakeOff();
-                        whoseMove = currentFigure.getColor();
-                    }
-                    if (!board.isMultiTakeOff()) {
-                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-                        oldCol = -1;
-                        oldRow = -1;
-                    }
-                }
-//                    } else {
-//                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-//                        oldCol = -1;
-//                        oldRow = -1;
-//                    }
-                }
-
-        } else {
-            oldCol = -1;
-            oldRow = -1;
+                board.move(oldRow, oldCol, row, col);
+                oldRow = -1;
+                oldCol = -1;
+                whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+            }
+            showOnBoard();
+            ShowBoardOnConsole();
         }
-        showOnBoard();
-        ShowBoardOnConsole();
     }
 }
+
 //
 //    public void doClick(int col, int row) {
 //        Color color = board.getFigure(row, col).getColor();
@@ -157,15 +140,46 @@ public class GameController {
 //                oldCol = col;
 //                oldRow = row;
 //            } else {
-//                if (board.move(oldRow, oldCol, row, col) && !board.isMultiTakeOff()) {
-//                    whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
-//                    oldCol = -1;
-//                    oldRow = -1;
-//                } if (board.move(oldRow, oldCol, row, col) && board.isMultiTakeOff()){
-//                    oldCol = -1;
-//                    oldRow = -1;
-//                }
+//                board.move(oldRow, oldCol, row, col);
+//                oldRow = -1;
+//                oldCol = -1;
+//                whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
 //            }
+//
+//
+//            showOnBoard();
+//            ShowBoardOnConsole();
+//        }
+//    }
+//}
+
+//    public void doClick(int col, int row) {
+//        Color color = board.getFigure(row, col).getColor();
+//        if (color == whoseMove || oldCol != -1) {
+//            if (oldCol == -1) {
+//                oldCol = col;
+//                oldRow = row;
+//            } else {
+//                if (board.move(oldRow, oldCol, row, col)) {
+//                    Figure currentFigure = board.getFigure(row, col);
+//                    if (!board.isMoveFinished()) {
+//                        oldCol = board.getColAfterTakeOff();
+//                        oldRow = board.getRowAfterTakeOff();
+//                        whoseMove = currentFigure.getColor();
+//                    }
+//                    if (board.isMoveFinished()) {
+//                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+//                        oldCol = -1;
+//                        oldRow = -1;
+//                    }
+//                }
+////                    } else {
+////                        whoseMove = whoseMove == Color.WHITE ? BLACK : Color.WHITE;
+////                        oldCol = -1;
+////                        oldRow = -1;
+////                    }
+//            }
+//
 //        } else {
 //            oldCol = -1;
 //            oldRow = -1;
@@ -174,3 +188,4 @@ public class GameController {
 //        ShowBoardOnConsole();
 //    }
 //}
+
