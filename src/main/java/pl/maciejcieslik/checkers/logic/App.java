@@ -30,9 +30,5 @@ public class App {
         board.move(3,3,6,6);
         System.out.println(board);
 
-
-
-        //GridPane , Image, ImageView,
-        //Grafika Planszy, Grafiki reprezentujace piony(przezroczyste tło)
     }
 }
